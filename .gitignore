@@ -49,3 +49,6 @@ backend/.editorconfig
 .idea/
 .DS_Store
 Thumbs.db
+
+#BDD doubled
+bdd_import.sql

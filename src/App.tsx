@@ -4,6 +4,7 @@ import { useState } from "react"
 import Login from "./Login";
 import PageAccueil from "./PageAccueil";
 import Maquette from "./PageMaquette";
+import Simulation from "./PageSimulation";
 
 function App(){
    const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,8 +30,28 @@ function App(){
     return (
       <Router>
           <Routes>
-            <Route path="/" element={<PageAccueil onLogout={handleLogout} />} />
-            <Route path="/maquette" element={<Maquette />} />
+          {/*IF not connected, go to Login*/} 
+            <Route path="/login" element={
+              <Login onLogin={handleLogin}/>
+            }/>
+              
+          
+
+          {/*Route Page accueil*/} 
+            <Route path="/" element={<PageAccueil onLogout={handleLogout}/>} />
+              
+          {/*Route Page Maquette*/} 
+            <Route path="/maquette" element={<Maquette onLogout={handleLogout}/>} />
+
+          {/*Route Page Simulation*/}
+          <Route path="/simulation" element={<Simulation onLogout={handleLogout}/>} />
+
+          {/*Default*/}
+          <Route path="*" element={<PageAccueil onLogout={handleLogout}/>} />
+          
+        
+
+
           </Routes>
         </Router>
       );

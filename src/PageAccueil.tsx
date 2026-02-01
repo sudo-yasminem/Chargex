@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 type PageAccueilProp = {
     onLogout: () => void;
@@ -16,7 +17,7 @@ export default function PageAccueil({onLogout}: PageAccueilProp) {
               Accueil
             </li>
             <li className="hover:bg-sky-400 rounded-md py-2 px-4 cursor-pointer text-center">
-              Maquette
+              <Link to="/maquette"> Maquette </Link>
             </li>
             <li className="hover:bg-sky-400 rounded-md py-2 px-4 cursor-pointer text-center">
               Simulation

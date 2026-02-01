@@ -1,17 +1,49 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
 
+interface Promotion{
+  id: number;
+  nom: string;
+}
+
+interface Module{
+  id:number;
+  nom:string;
+  heures_cm: number;
+  heures_td: number;
+  heures_tp: number;
+}
+interface Maquette{
+  id: number;
+  nom: string;
+  promotion: Promotion;
+  modules: Module[];
+  onLogout:() => void;
+}
 
 const Maquette: React.FC = () => {
+  const [maquettes, setMaquettes] = useState<Maquette[]>([])
+  const[selectedMaquette, setSelectedMaquette] = useState<Maquette | null > (null)
+
+
+
+ //Fetch Adonis
+  useEffect(() => {
+    fetch("http://127.0.0.1:3333/maquette")
+      .then((res) => res.json)
+      .then((data)=> setMaquettes(data))
+      .catch((err) => console.error("Erreur Fetch Adonis: ", err))
+  }, []);
+
+
   return (
     <div className="flex h-screen font-sans">
      
       <div className="w-1/4 bg-polytech flex flex-col justify-between text-white p-6">
    
         <div>
-          <h2 className="text-center text-2xl font-semibold mb-8">
-            ChargeX
-          </h2>
+          <h2 className="text-center text-2xl font-semibold mb-8"> ChargeX </h2>
 
           <ul className="space-y-6">
             <li className="hover:bg-sky-400 rounded-md py-2 px-4 cursor-pointer text-center">
@@ -59,29 +91,36 @@ const Maquette: React.FC = () => {
           <select
             id="maquette-select"
             className="border border-gray-400 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-400"
+
+            onChange={(e) => {
+              const id = parseInt(e.target.value);
+              const maquette = maquettes.find((m) => m.id === id) || null;
+              setSelectedMaquette(maquette);
+            }}
           >
-            <option>Sélection maquette</option>
-            <option>3A FISE IE 2025-2026</option>
-            <option>3A FISE MDD 2025-2026</option>
-            <option>3A FISE SE 2025-2026</option>
-            <option>3A FISA CYBER 2025-2026</option>
-            <option>3A FISA IOT 2025-2026</option>
-            <option>3A FISA CND 2025-2026</option>
+            <option value=""> Choisir une maquette </option>
+            {maquettes.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.nom}
+              </option>
+            ))}
           </select>
         </div>
 
-        
+        {selectedMaquette && (
         <div className="border-2 border-black p-6 max-w-2xl mx-auto rounded-md">
           <h2 className="text-xl font-semibold text-center mb-6">
-            NOM MAQUETTE
+           {selectedMaquette.nom}
           </h2>
-
+          <p> Promotion: {selectedMaquette.promotion.nom} </p>
+        
           <div className="space-y-4 text-center">
             <p>NB GROUPE CM : exemple</p>
             <p>NB GROUPE TD : exemple</p>
             <p>NB GROUPE TP : exemple</p>
           </div>
           <br></br>
+          
           
           <label> Liste des enseignants</label>
           <select 
@@ -107,9 +146,10 @@ const Maquette: React.FC = () => {
           </select>
           
         </div>
-      </div>
+        )}</div>
     </div>
   );
 };
+
 
 export default Maquette;

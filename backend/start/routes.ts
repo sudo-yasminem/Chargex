@@ -7,6 +7,7 @@
 |
 */
 
+const MaquetteController = () => import('#controllers/maquette_controller')
 import Route from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
 
@@ -22,3 +23,6 @@ Route.get('/testdb2', async () => {
 Route.get('/', async () => {
   return { message: 'Connexion Adonis OK' }
 })
+
+Route.get('/maquettes', [MaquetteController, 'index'])
+Route.get('/maquettes/:id', [MaquetteController, 'show'])

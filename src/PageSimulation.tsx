@@ -1,11 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-interface Simulation {
-  onLogout: () => void;
-  onNavigate: (page: string) => void;
-}
 
-export default function Simulation({ onLogout, onNavigate }: Simulation) {
+
+export default function Simulation({ onLogout }) {
+  const navigate = useNavigate()
+
   return (
     <div className="flex h-screen font-sans">
       
@@ -16,13 +16,13 @@ export default function Simulation({ onLogout, onNavigate }: Simulation) {
           <ul className="space-y-2 text-lg">
             <li
               className="py-3 px-4 hover:bg-sky-400 cursor-pointer"
-              onClick={() => onNavigate("accueil")}
+              onClick={() => navigate("accueil")}
             >
               Accueil
             </li>
             <li
               className="py-3 px-4 hover:bg-sky-400 cursor-pointer"
-              onClick={() => onNavigate("maquette")}
+              onClick={() => navigate("maquette")}
             >
               Maquette
             </li>
@@ -31,7 +31,7 @@ export default function Simulation({ onLogout, onNavigate }: Simulation) {
         </div>
 
         <div
-          className="text-center py-4 cursor-pointer hover:bg-sky-400 border-t border-white"
+          className="text-center py-4 cursor-pointer hover:bg-sky-400 border-t"
           onClick={onLogout}
         >
           Log out

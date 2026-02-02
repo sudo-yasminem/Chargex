@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
+import { useAuth } from "./context/LogoutContext"
 
 interface Promotion{
   id: number;
   nom: string;
+  annee: string;
 }
 
 interface Module{
   id:number;
-  nom:string;
   heures_cm: number;
   heures_td: number;
   heures_tp: number;
@@ -17,12 +18,19 @@ interface Module{
 interface Maquette{
   id: number;
   nom: string;
+  nb_modules: number;
   promotion: Promotion;
-  modules: Module[];
-  onLogout:() => void;
+  modules?: Module[];
 }
 
+/*interface LayoutProps {
+  onLogout:() => void
+}*/
+
+//const LayoutProps: React.FC<Fonction> = ({onLogout}) => {
+
 const Maquette: React.FC = () => {
+  //const {logout} = useAuth()
   const [maquettes, setMaquettes] = useState<Maquette[]>([])
   const[selectedMaquette, setSelectedMaquette] = useState<Maquette | null > (null)
 
@@ -30,11 +38,22 @@ const Maquette: React.FC = () => {
 
  //Fetch Adonis
   useEffect(() => {
-    fetch("http://127.0.0.1:3333/maquette")
-      .then((res) => res.json)
-      .then((data)=> setMaquettes(data))
+    fetch("http://127.0.0.1:3333/testdb2")
+      .then((res) => res.json())
+      .then((data)=> { 
+        console.log("Réponse Adonis:", data)
+        setMaquettes(data)
+      })
       .catch((err) => console.error("Erreur Fetch Adonis: ", err))
   }, []);
+
+  
+  const handleSelectMaquette = (id: number) => {
+    fetch(`http://localhost:3333/maquettes/${id}`)
+      .then(res => res.json())
+      .then(setSelectedMaquette)
+      .catch(console.error)
+  }
 
 
   return (
@@ -47,27 +66,28 @@ const Maquette: React.FC = () => {
 
           <ul className="space-y-6">
             <li className="hover:bg-sky-400 rounded-md py-2 px-4 cursor-pointer text-center">
-              <Link to="/" className="block">Accueil</Link>
+              <NavLink to="/" className="block">Accueil</NavLink>
             </li>
 
             <li className="bg-white text-polytech font-bold rounded-md py-2 px-4 text-center">
-              <Link to="/maquette" className="block">Maquette</Link>
+              <NavLink to="/maquette" className="block">Maquette</NavLink>
             </li>
 
             <li className="hover:bg-sky-400 rounded-md py-2 px-4 cursor-pointer text-center">
-              <Link to="/simulation" className="block">Simulation</Link>
+              <NavLink to="/simulation" className="block">Simulation</NavLink>
             </li>
           </ul>
         </div>
 
        
-        <Link
+        <NavLink
           to="/"
           className="border-2 border-white text-white font-semibold py-2 px-4 rounded-md text-center hover:bg-white hover:text-polytech transition-all duration-200"
         >
           Log out
-        </Link>
+        </NavLink>
       </div>
+      
 
     
       <div className="flex-1 bg-white p-10 overflow-auto">
@@ -149,7 +169,8 @@ const Maquette: React.FC = () => {
         )}</div>
     </div>
   );
-};
+}
+
 
 
 export default Maquette;

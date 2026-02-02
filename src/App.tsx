@@ -5,6 +5,7 @@ import Login from "./Login";
 import PageAccueil from "./PageAccueil";
 import Maquette from "./PageMaquette";
 import Simulation from "./PageSimulation";
+import { LogoutContext } from "./context/LogoutContext";
 
 function App(){
    const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,9 +22,11 @@ function App(){
 
    if (!isLoggedIn){
     return(
-      <Router>
-        <Login onLogin={handleLogin} />
-      </Router>
+      <LogoutContext.Provider value={{logout: handleLogout}}>
+        <Router>
+          <Login onLogin={handleLogin} />
+        </Router>
+      </LogoutContext.Provider>
     );
    }
 

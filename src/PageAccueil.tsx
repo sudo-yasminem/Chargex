@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 type PageAccueilProp = {
     onLogout: () => void;
@@ -17,10 +17,10 @@ export default function PageAccueil({onLogout}: PageAccueilProp) {
               Accueil
             </li>
             <li className="hover:bg-sky-400 rounded-md py-2 px-4 cursor-pointer text-center">
-              <Link to="/maquette"> Maquette </Link>
+              <NavLink to="/maquette"> Maquette </NavLink>
             </li>
             <li className="hover:bg-sky-400 rounded-md py-2 px-4 cursor-pointer text-center">
-              Simulation
+              <NavLink to="/simulation">Simulation</NavLink> 
             </li>
           </ul>
         </div>
